@@ -42,6 +42,20 @@ typedef struct {
 }GyroValues;
 
 
+typedef struct {
+	float prev_gyro_roll;
+	float prev_gyro_pitch;
+	float roll_angle;
+	float pitch_angle;
+	uint32_t prev_time;
+}AttitudeVal;
+
+typedef struct {
+	float gyro_x_offset;
+	float gyro_y_offset;
+	float gyro_z_offset;
+}GyroOffset;
+
 /*
  *  dlpf digital low pass filter.
  *
@@ -64,6 +78,13 @@ void configMPU(I2C_HandleTypeDef *hi2c,DLPF_Conf dlpf, FS_SELConf accel_fs_sel, 
 AccelValues read_MPU6050_Accels();
 GyroValues read_MPU6050_Gyros();
 double read_MPU6050_Temp();
+
+/*
+ *  brief: Complemantary Filter uygulaması,  bu fonksiyon ilgili parametreleri geçtiğinizde
+ *  		AttitudeVal tipi üzerinden roll ve pitch değeri döner.
+ */
+void compute_MPU6050_atitude(AttitudeVal *attitudeVal, AccelValues accelVal, GyroValues gyroVal);
+void gyroOffsetCheck(GyroOffset *gyroOffset);
 
 
 #endif /* INC_G_MPU6050_H_ */
